@@ -9,7 +9,7 @@ def binance_price(symbol, time, days):
     client.API_URL = 'https://api.binance.com/api'
     time = time
     interval = eval(f'Client.KLINE_INTERVAL_{time}')
-    candles = client.get_historical_klines(symbol, interval, f'{days} days ago UTC')#f'1 Jan, {i}', limit = 1000)
+    candles = client.get_historical_klines(symbol, interval, f'{days} days ago UTC')
 
     candles_data_frame = df(candles)
     candles_data_frame = candles_data_frame.drop_duplicates(subset=[0], keep='first')
