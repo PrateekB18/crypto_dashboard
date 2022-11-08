@@ -1,2 +1,2 @@
-pkey = 'Q4e5DsdqUzHMcjJER5LYP1qqBkoAMkgZ5SWOBzgZ0YahVwbJRpF2mXwnPPt61lnG'
-skey = 'LLKUbniT9ebtgTY7NDDUfGL3KnHNjkylMcf7osKHwPfS1nDZialjIHujLPTLZLVM'
+pkey = ''
+skey = ''
