@@ -25,13 +25,9 @@ def binance_price(symbol, time, days):
     candles_data_frame.pop(11)
 
     dataframe_final_date = df(final_date)
-
     dataframe_final_date.columns = ['date']
-
     final_dataframe = candles_data_frame.join(dataframe_final_date)
-
     final_dataframe.set_index('date', inplace=True)
-
     final_dataframe.columns = ['open', 'high', 'low', 'close', 'volume', 'close_time', 'asset_volume', 'trade_number', 'taker_buy_base', 'taker_buy_quote']
     cols = final_dataframe.columns
     final_dataframe[cols] = final_dataframe[cols].apply(pd.to_numeric, errors='coerce')
@@ -51,4 +47,3 @@ def binance_intervals():
     options = dir(Client)
     intervals = [o[15:] for o in options if 'KLINE_INTERVAL' in o]
     return intervals
-
