@@ -115,7 +115,6 @@ def make_dataframe(dropdown1, dropdown2, dropdown3, value):
     fig.add_trace(go.Scatter(x=df.index[:],y=df['MA40'], mode = 'lines',
                              name="40 step Moving Average",
                              line_color = 'rgb(51,61,71)'),row=1, col=1),
-    # fig.add_trace(go.Bar(x=df.index[:], y = df['volume']), row=3, col=1)
 
     fig.update_layout(
         autosize=True,
