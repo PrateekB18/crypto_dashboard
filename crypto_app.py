@@ -1,6 +1,7 @@
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
+import dash_bootstrap_components as dbc
 from dash.dependencies import Input, Output
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
@@ -16,8 +17,7 @@ purchase_currency = 'AUD'
 crypto_list = pd.DataFrame([['BTC','Bitcoin'],['ETH','Ethereum'], ['XRP', 'Ripple'],
                        ['DOGE', 'Dogecoin'], ['SHIB', 'Shiba Inu'], ['UNI', 'Uniswap'],
                        ['TRX', 'Tron'], ['LINK', 'Chainlink'], ['SOL', 'Solana'], 
-                       ['LUNA', 'Terra' ], ['BEAM', 'Beam'], ['MANA', 'Decentraland'],
-                       ['ADA', 'Cardano']],
+                       ['BEAM', 'Beam'], ['MANA', 'Decentraland'], ['ADA', 'Cardano']],
                        columns=['Symbol', 'Label'])
 
 crypto_dict = dict(zip(crypto_list['Label'], crypto_list['Symbol']))
@@ -29,56 +29,77 @@ intervals = pd.DataFrame([['15 Minutes', '15MINUTE'],['30 Minutes', '30MINUTE'],
 interval_dict = dict(zip(intervals['Symbol'], intervals['Label']))
 
 days  = list(range(1,366))
-days_list = [str(i) for i in days]
+days_list = [str(i)+' days' for i in days]
 hist_dict = dict(zip(days_list, days))
 
 
-app = dash.Dash(__name__)
+app = dash.Dash(external_stylesheets=[dbc.themes.BOOTSTRAP])
 
 app.layout = html.Div([
-    html.Div(
-        [
-            
-    dcc.Dropdown(
-        id='dropdown1',
-        options=[{'label':label, 'value': symbol} for label, symbol in interval_dict.items()], 
-        placeholder="Select Time Interval",
-        style=dict(
-            width='40%',
-            verticalAlign="middle"
-            )
-    ),
+    
+    dbc.Row([dbc.Col(html.H2('Crypto Price App', style = {'font-family':"Times New Roman",
+           'font-weight': 'bold', 
+           "text-align": "center"}))]),
+    
+    dbc.Row([
+        dbc.Col([ html.Label(['Select Time Interval'], 
+                             style={'font-family':"Times New Roman",
+                                    'font-weight': 'bold', 
+                                    "text-align": "center"})]),
+        dbc.Col([ html.Label(['Select Crypto'], 
+                             style={'font-family':"Times New Roman",
+                                    'font-weight': 'bold', 
+                                    "text-align": "center"})]),
+        dbc.Col([ html.Label(['Select Days Range'], 
+                             style={'font-family':"Times New Roman",
+                                    'font-weight': 'bold', 
+                                    "text-align": "center"})]),
+        ],justify = 'center'),
+    
+    dbc.Row([
+        dbc.Col([ dcc.Dropdown(
+                id='dropdown1',
+                options=[{'label':label, 'value': symbol} for label, symbol in interval_dict.items()], 
+                value = '1HOUR',
+                placeholder="Select Time Interval",
+                
+                style=dict(
+                    verticalAlign="middle",
+                    width='100%'
+                    )),
+                ]),
+        dbc.Col([ dcc.Dropdown(
+                id='dropdown2',
+                options=[{'label':label, 'value': symbol} for label, symbol in crypto_dict.items()], 
+                value = 'BTC',
+                placeholder="Select Crypto",
+                style=dict(
+                    verticalAlign="middle",
+                    width='100%'
+                    )),
+                ]),
+        dbc.Col([ dcc.Dropdown(
+                id='dropdown3',
+                options=[{'label':label, 'value': symbol}for label, symbol in hist_dict.items()], 
+                value = 2,
+                placeholder="Select Days Range",
+                style=dict(
+                    verticalAlign="middle",
+                    width='100%'
+                    ))
+                ]),
+            ],justify = 'start'),
 
-    dcc.Dropdown(
-        id='dropdown2',
-        options=[{'label':label, 'value': symbol} for label, symbol in crypto_dict.items()], 
-        placeholder="Select Crypto",
-        style=dict(
-            width='40%',
-            verticalAlign="middle"
-            )
-    ),
+
+
+    html.Div([
+        dcc.Checklist(id='toggle-rangeslider',
+            options=[{'label': 'Include Rangeslider', 'value': 'slider'}],
+            value=['slider'])]),
     
-    dcc.Dropdown(
-        id='dropdown3',
-        options=[{'label':label, 'value': symbol}for label, symbol in hist_dict.items()], 
-        placeholder="Select Days Range",
-        style=dict(
-            width='40%',
-            verticalAlign="middle"
-            )
-    )
-    
-    ], style=dict(display='flex')
-),
-    
-    dcc.Checklist(
-    id='toggle-rangeslider',
-    options=[{'label': 'Include Rangeslider', 'value': 'slider'}],
-    value=['slider']
-),
-    
-    dcc.Graph(id="graph"),
+    html.Div([
+        dcc.Graph(id="graph")
+        ])
 ])
 
 @app.callback(
@@ -93,7 +114,8 @@ def make_dataframe(dropdown1, dropdown2, dropdown3, value):
     df = binance_price(symbol, dropdown1, dropdown3)
     df['MA10'] = df.close.rolling(10).mean()
     df['MA20'] = df.close.rolling(20).mean()
-    df['MA40'] = df.close.rolling(40).mean()
+    df['MA50'] = df.close.rolling(50).mean()
+
     
     fig = make_subplots(vertical_spacing = 1, rows=1, cols=1)
     fig.add_trace(go.Candlestick(
@@ -112,9 +134,10 @@ def make_dataframe(dropdown1, dropdown2, dropdown3, value):
     fig.add_trace(go.Scatter(x=df.index[:],y=df['MA20'], mode = 'lines',
                              name="20 step Moving Average",
                              line_color = 'rgb(32,169,202)'),row=1, col=1),
-    fig.add_trace(go.Scatter(x=df.index[:],y=df['MA40'], mode = 'lines',
-                             name="40 step Moving Average",
+    fig.add_trace(go.Scatter(x=df.index[:],y=df['MA50'], mode = 'lines',
+                             name="50 step Moving Average",
                              line_color = 'rgb(51,61,71)'),row=1, col=1),
+    # fig.add_trace(go.Bar(x=df.index[:], y = df['volume']), row=3, col=1),
 
     fig.update_layout(
         autosize=True,
