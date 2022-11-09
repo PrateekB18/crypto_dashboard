@@ -37,7 +37,7 @@ app = dash.Dash(external_stylesheets=[dbc.themes.BOOTSTRAP])
 
 app.layout = html.Div([
     
-    dbc.Row([dbc.Col(html.H2('Crypto Price App', style = {'font-family':"Times New Roman",
+    dbc.Row([dbc.Col(html.H2('Crypto vs AUD', style = {'font-family':"Times New Roman",
            'font-weight': 'bold', 
            "text-align": "center"}))]),
     
