@@ -9,3 +9,5 @@ Bitcoin, Ethereum, Ripple, Dogecoin, Shiba Inu, Uniswap, Tron, Chainlink, Solana
 <b>Time Intervals available for Candles</b>
 
 15 Minutes, 30 Minutes, 1 Hour, 4 Hours, 12 Hours, 24 Hours
+
+To use the script update your API key and Secret Key in keys.py
