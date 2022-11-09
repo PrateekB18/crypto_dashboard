@@ -1,3 +1,13 @@
+# -*- coding: utf-8 -*-
+'''
+##########################
+Created on Sat July 9 2022
+@author: Prateek
+##########################
+Dash application to fetch crypto data from binance and make a candlestick chart for different cryptocurrencies against AUD. 
+10 steps, 20 steps, and 50 step moving average can be toggled on or off.
+To use the script update your API key and Secret Key in keys.py
+'''
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
