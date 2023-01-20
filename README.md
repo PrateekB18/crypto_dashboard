@@ -1,4 +1,4 @@
-# Crypto AUD App
+# Crypto Dashboard
 
 Dash application to fetch crypto data from binance and make a candlestick chart for different cryptocurrencies against AUD. 10 steps, 20 steps, and 50 step moving average can be toggled on or off.
 
