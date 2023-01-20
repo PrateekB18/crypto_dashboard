@@ -12,3 +12,4 @@ Bitcoin, Ethereum, Ripple, Dogecoin, Shiba Inu, Uniswap, Tron, Chainlink, Solana
 
 15 Minutes, 30 Minutes, 1 Hour, 4 Hours, 12 Hours, 24 Hours
 
+<img src="https://i.imgur.com/tf0S3YI.png" alt="Crypto Dashboard">
